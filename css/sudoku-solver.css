@@ -1,0 +1,101 @@
+
+body {
+    background-color: transparent;
+}
+
+colgroup, tbody {
+    border: solid medium;
+}
+
+#body-center {
+    background-color: transparent;
+    width: 40em;   /* 2 * td.width * 10 */
+    height: 100%;
+    margin: 10px auto 0;
+}
+
+.wait-div {
+    display: none;
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    width: 40em;   /* matches body-center */
+    z-index: 20;
+    vertical-align: middle;
+}
+
+.wait-img {
+    margin-top: 35%;
+    max-width: 100%;
+    max-height: 100%;
+    opacity: 1;
+}
+
+#sudoku-table {
+    border-collapse: collapse;
+    font-family: Calibri, sans-serif;
+    font-size: 2em;
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sudoku-table td {
+    border: solid thin;
+    height: 2em;
+    width: 2em;
+    text-align: center;
+    padding: 0;
+}
+
+#sudoku-btn-area {
+    margin-top: 1em;
+    margin-bottom: 1em;
+} 
+
+#sudoku-message-area {
+    width: auto;
+    display: none;
+}
+
+/*#sudoku-message-area p {
+    color: red;
+    font-family: Calibri, sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+}*/
+#sudoku-message {
+    color: red;
+    font-family: Calibri, sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+#footer-div {
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    border-color: #000;
+    border-radius: 10px;
+    border-width: medium;
+    border-style: groove;
+}
+
+
+.centered-text {
+    text-align: center;
+}
+
+.centered-div {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.btn.big {
+    font-size: 2em;
+}
+
+.footer-elem {
+    display: inline-block;
+    margin: auto;
+}

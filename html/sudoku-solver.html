@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+    <head>
+        <title>Sudoku Solver</title>
+
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="css/sudoku-solver.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    </head>
+
+    <body>
+        <div id="body-center"> <!-- centered body wrapper -->
+
+            <!-- There are better ways to do this but for now it suffices -->
+            <div id="sudoku-wait-div" class="wait-div">
+                <img class="wait-img" src="img/please_wait.gif"
+                     alt="Loading dialog animation">
+            </div>
+
+            <!-- Table formated as a sudoku grid -->
+            <table id="sudoku-table">
+                <caption class="centered-text">Sudoku Solver</caption>
+                <colgroup><col><col><col></colgroup>
+                <colgroup><col><col><col></colgroup>
+                <colgroup><col><col><col></colgroup>
+
+                <tbody>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                </tbody>
+
+                <tbody>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                </tbody>
+
+                <tbody>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                    <tr> <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                         <td></td> <td></td> <td></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div id="sudoku-message-area">
+                <p id="sudoku-message">Sample message</p>
+            </div>
+
+            <!-- Button space -->
+            <div id="sudoku-btn-area" class="centered-div">
+                <button type="button" class="btn btn-info big"
+                        onclick="clearSudokuValues()">
+                        Clear
+                </button>
+                <button type="button" class="btn btn-success big"
+                        onclick="solveBtnHandler()">
+                    Solve
+                </button>
+            </div>
+
+            <!-- Footer space -->
+            <div id="footer-div" class="centered-div">
+                <p class="footer-elem">
+                    <a href="http://validator.w3.org/check?uri=referer">
+                        <img src="http://www.w3.org/Icons/valid-html401"
+                             alt="Valid HTML 4.01 Strict"
+                             height="31" width="88">
+                    </a>
+                </p>
+                <p class="footer-elem">
+                    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                        <img style="border:0;width:88px;height:31px"
+                             src="http://jigsaw.w3.org/css-validator/images/vcss"
+                             alt="Valid CSS!">
+                    </a>
+                </p>
+            </div>
+
+        </div> <!-- end of centered wrapper -->
+
+        <!-- Table editing, ajax, ... -->
+        <script type="text/javascript" src="js/sudoku-solver.js"></script>
+        <script type="text/javascript">
+            function onSudokuSolveSuccess(data) {
+                if (data.error) {
+                    showSudokuMessage(data.error_msg);
+                } else {
+                    setSudokuValues(data.solution);
+                }                
+            }
+
+            function showSudokuMessage(message) {
+                var msgDiv = document.getElementById("sudoku-message-area");
+                var msg = document.getElementById("sudoku-message");
+                msg.innerHTML = message;
+                msgDiv.style.display = 'block';
+            }
+
+            function hideSudokuMessage() {
+                var msgDiv = document.getElementById("sudoku-message-area");
+                msgDiv.style.display = 'none';
+            }
+
+            function showWaitMessage() {
+                var waitDiv = document.getElementById('sudoku-wait-div');
+                waitDiv.style.display = 'block';
+            }
+
+            function hideWaitMessage() {
+                var waitDiv = document.getElementById('sudoku-wait-div');
+                waitDiv.style.display = 'none';
+            }
+
+            function solveBtnHandler() {
+                showWaitMessage();
+                hideSudokuMessage();
+
+                var values = {'sudoku': getSudokuValues()};
+                var jsonValues = JSON.stringify(values);
+                
+
+                $.ajax({
+                    url: 'php/sudoku-solver.php',
+                    type: 'post',
+                    dataType: 'json',
+                    data: values,
+                    success: onSudokuSolveSuccess,
+                    error: function(xhr, ajaxOpts, thrownError) {
+                        alert("Status: " + xhr.status + 
+                              "\nResponse: " + xhr.responseText +
+                              "\nError: " + thrownError);
+                    },
+                    complete: function(xhr, satus) {
+                        hideWaitMessage();
+                    }
+                });
+            }
+        </script>
+    </body>
+
+</html>
